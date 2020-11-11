@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    
+    <changeSet id="Creating Skill" author="Albert S. Java Newbie">
+        <createTable tableName="skill">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="Creating Account" author="Albert S. Java Newbie">
+        <createTable tableName="account">
+            <column name="id" type="bigint"  autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="account_status" type="enum('ACTIVE','BANNED','DELETED')"/>
+        </createTable>
+    </changeSet>  
+
+    <changeSet id="Creating Developer" author="Albert S. Java Newbie">
+        <createTable tableName="developer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="account_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="FK_ACCOUNT_ID"
+                                 baseTableName="developer" baseColumnNames="account_id"
+                                 referencedTableName="account" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="Creating developer_skills" author="Albert S. Java Newbie">
+        <createTable tableName="developer_skills">
+            <column name="developer_id" type="bigint"/>
+            <column name="skill_id" type="bigint" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="FK_DEVELOPER_ID"
+                                 baseTableName="developer_skills" baseColumnNames="developer_id"
+                                 referencedTableName="developer" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint constraintName="FK_SKILL_ID"
+                                 baseTableName="developer_skills" baseColumnNames="skill_id"
+                                 referencedTableName="skill" referencedColumnNames="id"
+        />
+    </changeSet>
+</databaseChangeLog>
+
